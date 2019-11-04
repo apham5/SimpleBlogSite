@@ -68,7 +68,7 @@ class BlogController extends Controller
      */
     public function show(Blog $blog)
     {
-        return view('blogs.view')->pageTitle('View Blog');
+        return view('blogs.view')->with('pageTitle',$blog->title)->with('blog',$blog);
     }
 
     /**
