@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Blog;
+use App\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class BlogController extends Controller
 {
@@ -68,7 +70,11 @@ class BlogController extends Controller
      */
     public function show(Blog $blog)
     {
-        return view('blogs.view')->with('pageTitle',$blog->title)->with('blog',$blog);
+        $user = auth()->user();
+        $likes = DB::table('likes')->where('blog_id',$blog->blog_id)->get();
+        //$comments = DB::table('comments')->where('blog_id',$blog->blog_id)->orderBy('updated_at')->get();
+        $comments = Comment::where('blog_id',$blog->blog_id)->orderBy('updated_at')->get();
+        return view('blogs.view')->with('pageTitle',$blog->title)->with('blog',$blog)->with('user',$user)->with('likes',$likes)->with('comments',$comments);
     }
 
     /**

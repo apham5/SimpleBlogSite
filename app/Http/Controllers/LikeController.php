@@ -8,6 +8,16 @@ use Illuminate\Http\Request;
 class LikeController extends Controller
 {
     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -35,7 +45,13 @@ class LikeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $like = new Like([
+            'username' => $request->username,
+            'blog_id' => $request->blog_id,
+            'timestamp' => date('Y-m-d H:i:s', time())
+        ]);
+        $like->save();
+        return redirect()->route('blogs.show',$request->blog_id);
     }
 
     /**

@@ -6,7 +6,8 @@
         <div class="col-md-8">
             <h1 align="center">Home Page</h1> --}}
 
-            <a class="btn btn-primary btn-lg" href="/blogs/create">+ Write a Blog</a>
+            <a class="btn btn-primary" href="/blogs/create">+ Write a Blog</a>
+            <a class="btn btn-secondary" href="/relations">See relations (Mileston 2.C)</a>
             <br><br/>
             @if($blogs->isEmpty())
                 <div class="card">
@@ -23,7 +24,7 @@
                         <div class="card-body">
                             <h4 class="card-title">{{ $blog->title }}</h4>
                             @if(strlen($blog->content) < 100)
-                                <p class="card-text">{{ substr($blog->content,0,100) }}</p>
+                                <p class="card-text">{{ $blog->content }}</p>
                             @else
                                 <p class="card-text">{{ substr($blog->content,0,100) }}...</p>
                             @endif

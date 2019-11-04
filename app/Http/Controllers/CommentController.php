@@ -8,6 +8,16 @@ use Illuminate\Http\Request;
 class CommentController extends Controller
 {
     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -35,7 +45,14 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $comment = new Comment([
+            'username' => $request->username,
+            'blog_id' => $request->blog_id,
+            'content' => $request->content,
+            'timestamp' => date('Y-m-d H:i:s', time())
+        ]);
+        $comment->save();
+        return redirect()->route('blogs.show',$request->blog_id);
     }
 
     /**

@@ -19,4 +19,7 @@ Route::redirect('/','/login');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/relations', 'HomeController@relations');
 Route::resource('blogs','BlogController');
+Route::post('like', 'LikeController@store')->name('like.store');
+Route::post('comment', 'CommentController@store')->name('comment.store');
