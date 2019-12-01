@@ -18,10 +18,16 @@
             {{ csrf_field() }}
             <input type="hidden" name="blog_id" value={{ $blog->blog_id }}>
             <input type="hidden" name="username" value={{ $user->username }}>
-            <button type="submit" class="btn btn-secondary btn-sm">Like</button>
+            <button type="submit" class="btn btn-primary"><i class="fas fa-heart"></i> Like</button>
+            @if( (auth()->user()->username == $blog->user->username) || (auth()->user()->username == 'admin'))
+                <a class="btn btn-secondary" href="/blogs/{{ $blog->blog_id }}/edit"><i class="fas fa-pen"></i> Edit blog</a>
+            @endif
         </form>
     @else
-        <button class="btn btn-secondary" disabled>Liked</button>
+        <button class="btn btn-primary" disabled><i class="fas fa-heart"></i> Liked</button>
+        @if( (auth()->user()->username == $blog->user->username) || (auth()->user()->username == 'admin'))
+            <a class="btn btn-secondary" href="/blogs/{{ $blog->blog_id }}/edit"><i class="fas fa-pen"></i> Edit blog</a>
+        @endif
     @endif
     <hr>
 
@@ -32,12 +38,15 @@
     @else
         @foreach($comments as $comment)
             <div class="container">
-                <h6><b>{{$comment->username}}</b></h6>
+                <h6><b><i class="fas fa-user"></i> {{$comment->username}}</b></h6>
             </div>
             <div class="card">
                 <div class="card-body">
                     <p class="card-text">{{ $comment->content }}</p>
                     <p class="card-subtitle mb-2 text-muted">Last edited {{ $comment->updated_at }}</p>
+                    @if( (auth()->user()->username == $comment->user->username) || (auth()->user()->username == 'admin'))
+                        <a class="btn btn-secondary btn-sm" href="/comment/{{ $comment->comment_id }}/edit"><i class="fas fa-pen"></i> Edit comment</a>
+                    @endif
                 </div>
             </div>
             @if(!$loop->last)

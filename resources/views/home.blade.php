@@ -6,9 +6,11 @@
         <div class="col-md-8">
             <h1 align="center">Home Page</h1> --}}
 
-            <a class="btn btn-primary" href="/blogs/create">+ Write a Blog</a>
-            <a class="btn btn-secondary" href="/relations">See relations (Mileston 2.C)</a>
-            <br><br/>
+            <div style="text-align: center;">
+                <a class="btn btn-primary btn-lg" href="/blogs/create"><i class="fas fa-plus"></i> Write a Blog</a>&nbsp
+                <a class="btn btn-secondary btn-lg" href="/relations">Preview tables</a>
+            </div>
+            <br>
             @if($blogs->isEmpty())
                 <div class="card">
                     <div class="card-header">No blogs</div>
@@ -19,7 +21,7 @@
             @else
                 @foreach ($blogs as $blog)
                     <div class="card">
-                        <div class="card-header"><b>{{ $blog->user->username }}</b></div>
+                        <div class="card-header"><i class="fas fa-user"></i><b> {{ $blog->user->username }}</b></div>
 
                         <div class="card-body">
                             <h4 class="card-title">{{ $blog->title }}</h4>
@@ -28,7 +30,10 @@
                             @else
                                 <p class="card-text">{{ substr($blog->content,0,100) }}...</p>
                             @endif
-                            <a class="btn btn-primary" href="/blogs/{{ $blog->blog_id }}">View blog</a>
+                            <a class="btn btn-primary" href="/blogs/{{ $blog->blog_id }}"><i class="far fa-eye"></i> View blog</a>
+                            @if( (auth()->user()->username == $blog->user->username) || (auth()->user()->username == 'admin'))
+                            <a class="btn btn-secondary" href="/blogs/{{ $blog->blog_id }}/edit"><i class="fas fa-pen"></i> Edit blog</a>
+                            @endif
                         </div>
                     </div>
                     <br>

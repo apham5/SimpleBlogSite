@@ -85,7 +85,7 @@ class BlogController extends Controller
      */
     public function edit(Blog $blog)
     {
-        //
+        return view('blogs/edit')->with('pageTitle','Edit Blog')->with('blog', $blog);
     }
 
     /**
@@ -97,7 +97,22 @@ class BlogController extends Controller
      */
     public function update(Request $request, Blog $blog)
     {
-        //
+        // echo $request->button == 'destroy';
+        if ($request->button == 'destroy') {
+            //echo 'got in here';
+            $blog->delete();
+            return redirect()->route('home')->withMessage('The blog post has been deleted.')->with('backTo', 'home');
+        }
+        else {
+            $validator = Validator::make($request->all(), Blog::$rules, Blog::$messages);
+            if ($validator->fails()) {
+                return redirect()->route('blogs.edit', $blog)->withErrors($validator)->withInput();
+            }
+            $blog->title = $request->title;
+            $blog->content = $request->content;
+            $blog->save();
+            return redirect()->route('home')->withMessage('The blog post has been updated.')->with('backTo', 'home');
+        }
     }
 
     /**

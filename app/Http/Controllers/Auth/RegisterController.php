@@ -48,9 +48,13 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
+        // if (User::where('username',$data['username'])->count() > 0) {
+        //     return redirect('/login');
+        // }
+
         return Validator::make($data, [
-            'username' => ['required', 'string', 'max:50'],
-            'password' => ['required', 'string', 'min:6', 'confirmed'],
+            'username' => ['required', 'unique:users', 'string','max:50'],
+            'password' => ['required', 'string', 'min:6','max:50','confirmed'],
         ]);
     }
 
@@ -62,6 +66,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+
         return User::create([
             'username' => $data['username'],
             'password' => Hash::make($data['password']),

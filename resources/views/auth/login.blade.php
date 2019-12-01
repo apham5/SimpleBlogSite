@@ -4,6 +4,17 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    {{-- @yield('content') --}}
+                    @if(count($errors) > 0)
+                        <div class="alert alert-danger" role="alert">
+                            <p>Errors encountered:</p>
+                            <ul>@foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach</ul>
+                        </div>
+                    @endif
             <div class="card">
                 <div class="card-header">{{ __('Login') }}</div>
 

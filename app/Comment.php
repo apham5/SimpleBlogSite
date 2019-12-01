@@ -13,6 +13,14 @@ class Comment extends Model
         'username', 'blog_id', 'content'
     ];
 
+    public static $rules = [
+        'content' => 'required'
+    ];
+
+    public static $messages = [
+        'content.required' => 'The content of your comment is empty.'
+    ];
+
     public function user() {
         return $this->belongsTo('App\User','username','username');
     }

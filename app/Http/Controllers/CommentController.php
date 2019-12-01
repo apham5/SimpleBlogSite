@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Comment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class CommentController extends Controller
 {
@@ -45,6 +46,10 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), Comment::$rules, Comment::$messages);
+        if ($validator->fails()) {
+            return redirect()->route('blogs.show', $request->blog_id)->withErrors($validator)->withInput();
+        }
         $comment = new Comment([
             'username' => $request->username,
             'blog_id' => $request->blog_id,
@@ -74,7 +79,7 @@ class CommentController extends Controller
      */
     public function edit(Comment $comment)
     {
-        //
+        return view('comments.edit')->with('pageTitle','Edit Comment')->with('comment',$comment);
     }
 
     /**
@@ -86,7 +91,20 @@ class CommentController extends Controller
      */
     public function update(Request $request, Comment $comment)
     {
-        //
+        if ($request->button == 'destroy') {
+            //echo 'got in here';
+            $comment->delete();
+            return redirect()->route('home')->withMessage('The comment has been deleted.')->with('backTo', 'home');
+        }
+        else {
+            $validator = Validator::make($request->all(), Comment::$rules, Comment::$messages);
+            if ($validator->fails()) {
+                return redirect()->route('comment.edit', $comment)->withErrors($validator)->withInput();
+            }
+            $comment->content = $request->content;
+            $comment->save();
+            return redirect()->route('home')->withMessage('The comment has been updated.')->with('backTo', 'home');
+        }
     }
 
     /**

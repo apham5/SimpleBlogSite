@@ -35,6 +35,6 @@ class HomeController extends Controller
         $blogs = DB::table('blogs')->take(3)->get();
         $comments = DB::table('comments')->take(3)->get();
         $likes = DB::table('likes')->take(3)->get();
-        return view('relations')->with('pageTitle','Milestone 2 Task C: Relations')->with('users',$users)->with('blogs',$blogs)->with('comments',$comments)->with('likes',$likes);
+        return view('relations')->with('pageTitle','Preview Tables (first 3 entries)')->with('users',$users)->with('blogs',$blogs)->with('comments',$comments)->with('likes',$likes);
     }
 }
